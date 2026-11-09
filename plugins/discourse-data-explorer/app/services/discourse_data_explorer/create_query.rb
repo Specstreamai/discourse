@@ -12,9 +12,12 @@ module DiscourseDataExplorer
       validates :name, presence: true
 
       def query_attributes = slice(:name, :description, :sql).compact_blank
+
+      def requested_group_ids = Array.wrap(group_ids).uniq
     end
 
     model :groups, optional: true
+    policy :requested_groups_exist
 
     try ActiveRecord::RecordInvalid do
       transaction do
@@ -30,7 +33,11 @@ module DiscourseDataExplorer
     end
 
     def fetch_groups(params:)
-      Group.find(Array.wrap(params.group_ids).uniq)
+      Group.where(id: params.group_ids).to_a
+    end
+
+    def requested_groups_exist(params:, groups:)
+      groups.size == params.requested_group_ids.size
     end
 
     def create_query(params:, guardian:, groups:)

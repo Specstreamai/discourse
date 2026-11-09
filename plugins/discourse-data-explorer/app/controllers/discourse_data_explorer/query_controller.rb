@@ -164,10 +164,8 @@ module DiscourseDataExplorer
           raise Discourse::InvalidParameters.new(:name) if contract.errors.include?(:name)
           render_json_error(contract)
         end
-        on_model_not_found(:groups) do |failure|
-          raise failure.exception unless failure.exception.is_a?(ActiveRecord::RecordNotFound)
-          raise Discourse::NotFound
-        end
+        on_model_not_found(:groups) { |failure| raise failure.exception }
+        on_failed_policy(:requested_groups_exist) { raise Discourse::NotFound }
         on_model_errors(:query) { |query| render_json_error(query, type: :record_invalid) }
         on_model_not_found(:query) { |failure| raise failure.exception }
         on_exceptions(ActiveRecord::RecordInvalid) { |error| raise error }

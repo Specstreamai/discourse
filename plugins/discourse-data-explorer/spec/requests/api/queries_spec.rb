@@ -225,8 +225,11 @@ RSpec.describe "JSON:API queries", type: :request do
 
     context "when group lookup fails unexpectedly" do
       before do
-        allow(Group).to receive(:find).and_call_original
-        allow(Group).to receive(:find).with([analysts.id]).and_raise(RuntimeError, "lookup failed")
+        allow(Group).to receive(:where).and_call_original
+        allow(Group).to receive(:where).with(id: [analysts.id, analysts.id]).and_raise(
+          RuntimeError,
+          "lookup failed",
+        )
       end
 
       it "returns a server error without creating a query", :aggregate_failures do
