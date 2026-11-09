@@ -10426,6 +10426,7 @@ pl_PL:
         grant_admin_confirm: "Wysłaliśmy adres email, aby zweryfikować nowego administratora. Zapoznaj się z instrukcjami w nim zawartymi."
         revoke_moderation: "Odbierz status moderatora"
         grant_moderation: "Przyznaj status moderatora"
+        grant_moderation_confirm: "Czy na pewno chcesz mianować %{username} moderatorem?"
         unsuspend: "Odwieś"
         suspend: "Zawieś"
         show_flags_received: "Pokaż otrzymane flagi"
